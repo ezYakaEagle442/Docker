@@ -1,0 +1,65 @@
+FROM microsoft/windowsnanoserver:1809
+
+MAINTAINER pinpin <pinpin@microsoft.com>
+
+
+RUN @powershell -NoProfile -ExecutionPolicy unrestricted -Command "(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))) >$null 2>&1" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+
+RUN choco --version
+
+RUN choco install git.install --confirm --accept-license 
+
+RUN choco install azure-cli --confirm --accept-license 
+RUN choco install microsoftazurestorageexplorer --confirm --accept-license 
+RUN choco install terraform --confirm --accept-license 
+RUN choco install packer --confirm --accept-license 
+
+RUN choco install curl --confirm --accept-license 
+RUN choco install putty.install --accept-license 
+RUN choco install winscp --confirm --accept-license 
+RUN choco install openssh  --confirm --accept-license 
+RUN choco install openssl.light --accept-license 
+
+RUN choco install dotnetcore-sdk --confirm --accept-license 
+RUN choco install nuget.commandline --confirm  --accept-license 
+RUN choco install vscode  --confirm --accept-license 
+
+RUN choco install openjdk --confirm --accept-license 
+RUN choco install maven  --confirm --accept-license 
+RUN choco install gradle --confirm --accept-license 
+RUN choco install ant --confirm --accept-license 
+
+
+RUN choco install python3 --confirm --accept-license 
+RUN choco install nodejs.install --confirm --accept-license 
+# RUN choco install kotlinc install --confirm --accept-license 
+# RUN choco install golang --confirm --accept-license 
+# RUN choco install php --confirm --accept-license 
+  
+# RUN choco install docker-cli --confirm --accept-license  
+# RUN choco install docker-desktop --confirm --accept-license 
+# RUN choco install kubernetes-cli --confirm --accept-license 
+# RUN choco install minikube --confirm --accept-license 
+# RUN choco install kubernetes-helm --confirm --accept-license 
+ 
+# RUN choco install postman --confirm --accept-license 
+# RUN choco install selenium-all-drivers --confirm  --accept-license 
+# RUN choco install androidstudio --confirm --accept-license 
+  
+# RUN choco install mysql.workbench --confirm --accept-license 
+# RUN choco install mysql-connector --confirm  --accept-license 
+# RUN choco install sqljdbc --confirm --accept-license 
+# RUN choco install sqlserver-odbcdriver --confirm --accept-license 
+# RUN choco install pgadmin3 --confirm --accept-license 
+# RUN choco install pgadmin4 --confirm --accept-license 
+
+# RUN choco install googlechrome --confirm --accept-license 
+# RUN choco install firefox --confirm --accept-license 
+
+# RUN choco install keepass --confirm --accept-license   
+# RUN choco install wireshark --confirm --accept-license 
+# RUN choco install sysinternals --confirm --accept-license 
+ 
+# RUN choco install notepadplusplus.install --confirm --accept-license 
+# RUN choco install adobereader --confirm --accept-license  --verbose  
+
