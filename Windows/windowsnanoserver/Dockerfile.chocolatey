@@ -23,7 +23,7 @@ RUN choco install jq --confirm --accept-license
 RUN choco install wget --confirm --accept-license 
 RUN choco install curl --confirm --accept-license
 RUN choco install awk --confirm --accept-license
-
+RUN choco install conemu --confirm --accept-license
 RUN choco install dotnetcore-sdk --confirm --accept-license 
 RUN choco install nuget.commandline --confirm  --accept-license 
 RUN choco install vscode  --confirm --accept-license 
