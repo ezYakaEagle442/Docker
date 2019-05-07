@@ -17,6 +17,7 @@ RUN choco install winscp --confirm --accept-license
 RUN choco install openssh  --confirm --accept-license 
 RUN choco install openssl.light --accept-license 
 
+RUN choco install wsl --confirm --accept-license
 RUN choco install sed --confirm --accept-license
 RUN choco install grep --confirm --accept-license
 RUN choco install jq --confirm --accept-license
