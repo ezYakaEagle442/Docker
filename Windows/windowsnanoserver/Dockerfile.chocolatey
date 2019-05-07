@@ -2,11 +2,9 @@ FROM microsoft/windowsnanoserver:1809
 
 MAINTAINER pinpin <pinpin@microsoft.com>
 
-
 RUN @powershell -NoProfile -ExecutionPolicy unrestricted -Command "(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))) >$null 2>&1" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 
 RUN choco --version
-
 RUN choco install git.install --confirm --accept-license 
 
 RUN choco install azure-cli --confirm --accept-license 
@@ -14,11 +12,16 @@ RUN choco install microsoftazurestorageexplorer --confirm --accept-license
 RUN choco install terraform --confirm --accept-license 
 RUN choco install packer --confirm --accept-license 
 
-RUN choco install curl --confirm --accept-license 
 RUN choco install putty.install --accept-license 
 RUN choco install winscp --confirm --accept-license 
 RUN choco install openssh  --confirm --accept-license 
 RUN choco install openssl.light --accept-license 
+
+RUN choco install sed --confirm --accept-license
+RUN choco install grep --confirm --accept-license
+RUN choco install wget --confirm --accept-license 
+RUN choco install curl --confirm --accept-license
+RUN choco install awk --confirm --accept-license
 
 RUN choco install dotnetcore-sdk --confirm --accept-license 
 RUN choco install nuget.commandline --confirm  --accept-license 
