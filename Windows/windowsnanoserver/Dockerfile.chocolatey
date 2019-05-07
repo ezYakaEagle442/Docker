@@ -19,6 +19,7 @@ RUN choco install openssl.light --accept-license
 
 RUN choco install sed --confirm --accept-license
 RUN choco install grep --confirm --accept-license
+RUN choco install jq --confirm --accept-license
 RUN choco install wget --confirm --accept-license 
 RUN choco install curl --confirm --accept-license
 RUN choco install awk --confirm --accept-license
