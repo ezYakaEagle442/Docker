@@ -7,7 +7,7 @@
 # and are not intended to be used for any other purpose.
 
 
-FROM microsoft/windowsnanoserver:1809
+FROM mcr.microsoft.com/windows/nanoserver:1809
 MAINTAINER Zulu Enterprise Container Images <azul-zulu-images@microsoft.com>
 
 RUN setx PACKAGE zulu-8-azure-jre_8.38.0.13-8.0.212-win_x64.msi && \
