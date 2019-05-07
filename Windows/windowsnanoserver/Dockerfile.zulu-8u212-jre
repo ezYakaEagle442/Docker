@@ -8,7 +8,7 @@
 
 
 FROM mcr.microsoft.com/windows/nanoserver:1809
-MAINTAINER Zulu Enterprise Container Images <azul-zulu-images@microsoft.com>
+MAINTAINER pinpin <pinpin@microsoft.com>
 
 RUN setx PACKAGE zulu-8-azure-jre_8.38.0.13-8.0.212-win_x64.msi && \
     setx PACKAGE_DIR zulu-8/8u212 && \
