@@ -1,4 +1,5 @@
 # this Docker file is inspired by from https://github.com/microsoft/java/blob/master/docker/windowsservercore/Dockerfile.zulu-8u212-jre
+# tested on Windows 10.0.18362 N/A version 18362
 # base OS at https://hub.docker.com/_/microsoft-windows-base-os-images
 #
 # This Zulu OpenJDK Dockerfile and corresponding Docker image are
@@ -6,16 +7,54 @@
 # that are being developed for deployment on Microsoft Azure or Azure Stack,
 # and are not intended to be used for any other purpose.
 
+#usage:
+# docker build --isolation=hyperv --no-cache -t "pinpindock/nano1809-java8u212" -f ".\Dockerfile.zulu-8u212-jre" .
+# docker tag nano1809-java8u212 pinpindock/nano1809-java8u212
+# docker push pinpindock/nano1809-java8u212
 
-FROM mcr.microsoft.com/windows/nanoserver:1809
+# /!\ https://stackoverflow.com/questions/46539165/docker-windows-build-fails-with-error-the-system-cannot-find-the-path-specifie
+#changing the size to 20GB in the docker daemon config by adding this json:
+# "storage-opts": [
+#   "size=20G"
+# ]
+
+# Pre-requisite: Install Powershell On Nano
+# https://github.com/PowerShell/PowerShell-Docker/blob/master/release/stable/nanoserver1809/docker/Dockerfile
+#
+
+
+
+# https://social.msdn.microsoft.com/Forums/sqlserver/en-US/8352b9b5-03ae-438c-80c7-6412631d490f/cant-run-powershell-command-in-nano-server-container-image-on-ws2019-datacenter
+# PowerShell is not shipped with Nano 1809
+#FROM mcr.microsoft.com/windows/nanoserver:1809
+FROM mcr.microsoft.com/powershell:nanoserver-1809
+
 MAINTAINER pinpin <pinpin@microsoft.com>
+# https://social.msdn.microsoft.com/Forums/en-US/65e5e7d0-db0d-4dd4-b5f0-ab88aeb5cc27/build-image-from-nanoserver1709-get-an-access-denied-when-trying-to-set-system-variables-quot-run
+USER Administrator
+LABEL Description="Windows Nano Server 1809 shipped with PowerShell 6.2 and Zulu Java 8 Update 212"
+
 
 RUN setx PACKAGE zulu-8-azure-jre_8.38.0.13-8.0.212-win_x64.msi && \
     setx PACKAGE_DIR zulu-8/8u212 && \
     setx /m JAVA_HOME "C:\Program Files\zulu\zulu-8"
 
-RUN powershell -Command (new-object System.Net.WebClient).DownloadFile('http://repos.azul.com/azure-only/zulu/packages/%PACKAGE_DIR%/%PACKAGE%', 'C:\%PACKAGE%')
-RUN msiexec /quiet /i C:\%PACKAGE% && \
+
+#https://docs.microsoft.com/en-us/windows-server/get-started/powershell-on-nano-server
+
+#SHELL ["powershell", "-Command"]
+#RUN Get-Host
+#RUN Get-Module -ListAvailable
+#RUN @powershell -Command (new-object System.Net.WebClient).DownloadFile('http://repos.azul.com/azure-only/zulu/packages/zulu-8/8u212/zulu-8-azure-jre_8.38.0.13-8.0.212-win_x64.msi', 'C:\zulu-8-azure-jre_8.38.0.13-8.0.212-win_x64.msi')
+RUN pwsh -Command (new-object System.Net.WebClient).DownloadFile('http://repos.azul.com/azure-only/zulu/packages/%PACKAGE_DIR%/%PACKAGE%', 'C:\%PACKAGE%')
+
+RUN pwsh -Command ($env:Path)
+RUN pwsh -Command (Test-Path "C:\Windows\system32\msiexec.exe")
+RUN pwsh -Command ($Files = Get-ChildItem "C:\Windows")
+RUN pwsh -Command (foreach ($File in $Files){Write-Host $File})
+
+# MSI not supported in Nano ... : https://blogs.technet.microsoft.com/nanoserver/2016/04/27/wsa-updates-in-ws-2016-tp5/
+RUN "C:\Windows\System32\msiexec.exe /i" C:\%PACKAGE%  \
     del C:\%PACKAGE%
 
 RUN java -version

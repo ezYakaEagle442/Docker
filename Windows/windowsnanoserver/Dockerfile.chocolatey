@@ -1,7 +1,17 @@
-FROM mcr.microsoft.com/windows/nanoserver:1809
+# usage : 
+# docker build --isolation=hyperv --no-cache -t "nano1809-pwsh6.2.0-choco" -f ".\Dockerfile.chocolatey" .
+# docker tag nano1809-ps6 pinpindock/nano1809-pwsh6.2.0-choco
+# docker push pinpindock/nano1809-pwsh6.2.0-choco
+
+FROM pinpindock/nano1809-pwsh6.2.0
 MAINTAINER pinpin <pinpin@microsoft.com>
 
-RUN @powershell -NoProfile -ExecutionPolicy unrestricted -Command "(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))) >$null 2>&1" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+#USER Administrator
+LABEL Description="Windows Nano Server 1809 shipped with PowerShell 6.2 and with Chocolatey App Dev Ops packages"
+
+# https://chocolatey.org/docs/roadmap#chocolatey
+# https://github.com/chocolatey/choco/issues/1371
+RUN @pwsh -NoProfile -ExecutionPolicy unrestricted -Command "(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))) >$null 2>&1" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 
 RUN choco --version
 RUN choco install git.install --confirm --accept-license 
@@ -28,7 +38,11 @@ RUN choco install dotnetcore-sdk --confirm --accept-license
 RUN choco install nuget.commandline --confirm  --accept-license 
 RUN choco install vscode  --confirm --accept-license 
 
+RUN choco install zulu8
+# RUN choco install zulu 
 RUN choco install openjdk --confirm --accept-license 
+
+
 RUN choco install maven  --confirm --accept-license 
 RUN choco install gradle --confirm --accept-license 
 RUN choco install ant --confirm --accept-license 
